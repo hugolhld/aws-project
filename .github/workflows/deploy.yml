@@ -31,6 +31,7 @@ jobs:
         id: apply
         run: terraform apply -auto-approve
         working-directory: ./cd
+        continue-on-error: true
 
         # if failure, run another job
       - name: Failure
