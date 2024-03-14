@@ -8,6 +8,7 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  # AWS_SECRET_
 
 jobs:
   check-ip:
@@ -26,29 +27,8 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init
-        working-directory: ./cd
+        working-directory: ./
       - name: Terraform Apply
         id: apply
         run: terraform apply -auto-approve
-        working-directory: ./cd
-        continue-on-error: true
-
-        # if failure, run another job
-      - name: Failure
-        if: failure()
-        run: echo "Failure"
-
-      - name: Get instance IP
-        id: get-ip
-        run: |
-          INSTANCE_IP=$(terraform output -raw MyInstancePublicIp)
-          echo "::set-output name=instance_ip::$INSTANCE_IP"
-        working-directory: ./cd
-
-      - name: Execute script if IP is available
-        if: steps.get-ip.outputs.instance_ip != ''
-        run: echo steps.get-ip.outputs.instance_ip  # Remplacez ceci par le chemin vers votre script à exécuter
-      
-      - name: Handle no IP case
-        if: steps.get-ip.outputs.instance_ip == ''
-        run: echo "No IP available"
+        working-directory: ./
