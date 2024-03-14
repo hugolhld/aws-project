@@ -12,7 +12,7 @@
 #### 1 - Configure your AWS credidentials 🚗
 
  - Log you on you AWS account
- - Create **EC2 Key Pair** and download them, put this at the root of repo
+ - Create **EC2 Key Pair** and download them, put this at the root of directory
  - Configure Security group with rules like that: 
 
     `Custom TCP with PORT 8080`
