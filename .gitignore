@@ -1,0 +1,30 @@
+# Terraform ignore
+
+# Ignore .terraform directory
+**/.terraform/*
+
+# Ignore .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Ignore .tfvars files that are meant to be tracked.
+# By default, exclude all .tfvars files; include any specific .tfvars file you
+# wish to track. Uncomment the next line to track terraform.tfvars, if needed.
+# !terraform.tfvars
+
+# Ignore override files as they are usually used to override resources locally and so
+# are not checked in
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore plugin binaries
+*.tfplugin
+
+# Ignore .pem files
+*.pem
