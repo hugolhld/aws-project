@@ -24,7 +24,7 @@
 #### 2 - Run Terraform 🏃‍♂️
 
  - In first, run `terraform init`
- - Secondary, run `terraform deploy`
+ - Secondary, run `terraform apply`
  - You have to enter the name of your key file
  - You have to enter the path of your key file 
 **(THE FILE MUST BE IN ROOT FOLDER)**
