@@ -18,22 +18,36 @@ jobs:
     steps:
       - name: Check secrets
         run: echo ${{ secrets.AWS_ACCESS_KEY_ID }}
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v3
+
       - name: Terraform Init
         id: init
         run: terraform init
         working-directory: ./
+
+      # Creat key.pem file
+      - name: Create key.pem file
+        run: |
+          echo "${{ secrets.AWS_SECRET_SSH_KEY }}" > key.pem
+          chmod 600 key.pem
+
+      # Check key.pem file
+      - name: Check key.pem file
+        run: cat key.pem
+
       - name: Terraform Apply
         id: apply
         run: |-
           terraform apply \
           -var "key_name=${{ secrets.AWS_SECRET_SSH_NAME }}" \
-          -var "key_path=${{ secrets.AWS_SECRET_SSH_KEY }}" \
+          -var "key_path=key.pem" \
           -auto-approve
         working-directory: ./
