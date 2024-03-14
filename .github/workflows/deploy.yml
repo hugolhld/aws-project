@@ -1,0 +1,27 @@
+# # Deploy app to AWS EC2 and run terraform apply
+# name: Deploy
+# on:
+#   push:
+#     branches:
+#       - master
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - name: Setup Terraform
+#         uses: hashicorp/setup-terraform@v1
+#         with:
+#           terraform_version: 0.12.29
+#       - name: Terraform Init
+#         run: terraform init
+#       - name: Terraform Apply
+#         run: terraform apply -auto-approve
+#       - name: Deploy to EC2
+#         run: |
+#           ssh -i ${{ secrets.SSH_KEY }} ec2-user@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ec2-user/app && docker-compose up -d"
+
+
+
+      

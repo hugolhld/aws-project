@@ -19,7 +19,7 @@ resource "aws_instance" "my_ec2_instance" {
   ami           = "ami-0b7282dd7deb48e78"
   instance_type = "t2.micro"
 
-  key_name = "key"
+  key_name = var.key_name
 
   # Add role to the instance
   # iam_instance_profile = "role-ec2-admin"
@@ -31,7 +31,7 @@ resource "aws_instance" "my_ec2_instance" {
   connection {
     type        = "ssh"
     user        = "ec2-user"  # Faire attention, change en fonction des AIM
-    private_key = file("key.pem")
+    private_key = file(var.key_path)
     host        = self.public_ip
   }
 
@@ -54,7 +54,7 @@ resource "null_resource" "copy_app" {
   connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("key.pem")
+    private_key = file(var.key_path)
     host        = aws_instance.my_ec2_instance.public_ip
   }
 
@@ -77,7 +77,7 @@ resource "aws_instance" "my_mongo_instance" {
   ami           = "ami-0b7282dd7deb48e78"
   instance_type = "t2.micro"
 
-  key_name = "key"
+  key_name = var.key_name
 
   tags = {
     Name = "MyMongoInstance"
@@ -86,7 +86,7 @@ resource "aws_instance" "my_mongo_instance" {
   connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("key.pem")
+    private_key = file(var.key_path)
     host        = self.public_ip
   }
 
@@ -108,7 +108,7 @@ resource "null_resource" "copy_app_mongo" {
   connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("key.pem")
+    private_key = file(var.key_path)
     host        = aws_instance.my_mongo_instance.public_ip
   }
 
