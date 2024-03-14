@@ -28,7 +28,7 @@ name: Check IP and Execute Script
 on:
   push:
     branches:
-      - test-cd
+      - add-cd
 
 jobs:
   check-ip:
