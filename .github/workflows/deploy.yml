@@ -23,5 +23,38 @@
 #           ssh -i ${{ secrets.SSH_KEY }} ec2-user@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ec2-user/app && docker-compose up -d"
 
 
+name: Check IP and Execute Script
 
+on:
+  push:
+    branches:
+      - test-cd
+
+jobs:
+  check-ip:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Get instance IP
+        uses: actions/checkout@v4
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        working-directory: ./cd
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve
+        working-directory: ./cd
+
+      - name: Execute script if IP is available
+        if: steps.apply.outputs.instance_ip != ''
+        run: ./your-script.sh # Remplacez ceci par le chemin vers votre script à exécuter
       
+      - name: Handle no IP case
+        if: steps.get_ip.outputs.instance_ip == ''
+        run: echo "No IP available"
