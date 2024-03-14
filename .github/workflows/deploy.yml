@@ -35,7 +35,7 @@ jobs:
       - name: Get instance IP
         id: get-ip
         run: |
-          INSTANCE_IP=$(terraform output -raw instance_ip)
+          INSTANCE_IP=$(terraform output -raw MyInstancePublicIp)
           echo "::set-output name=instance_ip::$INSTANCE_IP"
         working-directory: ./cd
 
