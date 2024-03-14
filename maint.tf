@@ -32,7 +32,7 @@ data "aws_instances" "MySparkInstance_existing" {
 
 resource "aws_instance" "my_ec2_instance" {
 
-  count = length(data.aws_instances.MySparkInstance_existing.ids) > 0 ? 1 : 0
+  count = length(data.aws_instances.MySparkInstance_existing.ids) > 0 ? 0 : 1
 
   ami           = "ami-0b7282dd7deb48e78"
   instance_type = "t2.micro"
@@ -68,7 +68,7 @@ resource "aws_instance" "my_ec2_instance" {
 
 # Copy app-py folder in the instance
 resource "null_resource" "copy_app" {
-  count = length(data.aws_instances.MySparkInstance_existing.ids) > 0 ? 1 : 0
+  count = length(data.aws_instances.MySparkInstance_existing.ids) > 0 ? 0 : 1
   depends_on = [ aws_instance.my_ec2_instance ]
 
   connection {
@@ -134,7 +134,7 @@ data "aws_instances" "MyMongoInstance_existing" {
 
 resource "aws_instance" "my_mongo_instance" {
 
-  count = length(data.aws_instances.MyMongoInstance_existing.ids) > 0 ? 1 : 0
+  count = length(data.aws_instances.MyMongoInstance_existing.ids) > 0 ? 0 : 1
 
   ami           = "ami-0b7282dd7deb48e78"
   instance_type = "t2.micro"
@@ -167,7 +167,7 @@ resource "aws_instance" "my_mongo_instance" {
 
 resource "null_resource" "copy_app_mongo" {
 
-  count = length(data.aws_instances.MyMongoInstance_existing.ids) > 0 ? 1 : 0
+  count = length(data.aws_instances.MyMongoInstance_existing.ids) > 0 ? 0 : 1
 
   depends_on = [ aws_instance.my_mongo_instance ]
 
