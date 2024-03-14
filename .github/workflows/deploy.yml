@@ -3,7 +3,7 @@ name: Check IP and Execute Script
 on:
   push:
     branches:
-      - add-cd
+      - main
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
