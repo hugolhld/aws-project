@@ -32,6 +32,11 @@ jobs:
         run: terraform apply -auto-approve
         working-directory: ./cd
 
+        # if failure, run another job
+      - name: Failure
+        if: failure()
+        run: echo "Failure"
+
       - name: Get instance IP
         id: get-ip
         run: |
