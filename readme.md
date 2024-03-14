@@ -12,7 +12,8 @@
 #### 1 - Configure your AWS credidentials 🚗
 
  - Log you on you AWS account
- - Create **EC2 Key Pair** and download them, put this at the root of directory
+ - in `eu-west-3` region
+ - Create **EC2 Key Pair** region and download them, put this at the root of directory
  - Configure Security group with rules like that: 
 
     `Custom TCP with PORT 8080`

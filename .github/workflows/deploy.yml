@@ -1,27 +1,47 @@
-# # Deploy app to AWS EC2 and run terraform apply
-# name: Deploy
-# on:
-#   push:
-#     branches:
-#       - master
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v2
-#       - name: Setup Terraform
-#         uses: hashicorp/setup-terraform@v1
-#         with:
-#           terraform_version: 0.12.29
-#       - name: Terraform Init
-#         run: terraform init
-#       - name: Terraform Apply
-#         run: terraform apply -auto-approve
-#       - name: Deploy to EC2
-#         run: |
-#           ssh -i ${{ secrets.SSH_KEY }} ec2-user@${{ secrets.EC2_PUBLIC_IP }} "cd /home/ec2-user/app && docker-compose up -d"
+name: Check IP and Execute Script
 
+on:
+  push:
+    branches:
+      - add-cd
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_SECRET_SSH_NAME: 'key'
+  AWS_SECRET_SSH_KEY: ${{ secrets.AWS_SECRET_SSH_KEY }}
 
-      
+jobs:
+  check-ip:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        working-directory: ./
+
+      # Creat key.pem file
+      - name: Create key.pem file
+        run: |
+          echo "${{ secrets.AWS_SECRET_SSH_KEY }}" > key.pem
+          chmod 600 key.pem
+
+      # Check key.pem file
+      - name: Check key.pem file
+        run: cat key.pem
+
+      - name: Terraform Apply
+        id: apply
+        run: |-
+          terraform apply \
+          -var "key_name=${{ secrets.AWS_SECRET_SSH_NAME }}" \
+          -var "key_path=key.pem" \
+          -auto-approve
+        working-directory: ./
