@@ -31,11 +31,9 @@ jobs:
         working-directory: ./
       - name: Terraform Apply
         id: apply
-        # Add variables to the terraform apply command and automatically approve the apply
-        run: | -
+        run: |-
           terraform apply \
           -var "key_name=${{ secrets.AWS_SECRET_SSH_NAME }}" \
           -var "key_path=${{ secrets.AWS_SECRET_SSH_KEY }}" \
           -auto-approve
         working-directory: ./
-        
