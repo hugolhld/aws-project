@@ -36,6 +36,8 @@ resource "aws_instance" "my_ec2_instance" {
   ami           = "ami-06f64fb0331ab61a0"
   instance_type = "t2.micro"
 
+  monitoring = true
+
   key_name = var.key_name
 
   tags = {
@@ -208,5 +210,42 @@ resource "null_resource" "update_mongo_app" {
       "cd /home/ec2-user/",
       "docker-compose up --build -d"
     ]
+  }
+}
+
+
+# Add cloudwatch alarm for the Spark cluster
+resource "aws_cloudwatch_metric_alarm" "spark_alarm" {
+  count = length(data.aws_instances.MySparkInstance_existing.ids) > 0 ? 0 : 1
+
+  alarm_name          = "spark_alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "80"
+  alarm_description   = "This metric monitors ec2 cpu utilization"
+  dimensions = {
+    InstanceId = aws_instance.my_ec2_instance[0].id
+  }
+}
+
+# Add cloudwatch alarm for the MongoDB cluster
+resource "aws_cloudwatch_metric_alarm" "mongo_alarm" {
+  count = length(data.aws_instances.MyMongoInstance_existing.ids) > 0 ? 0 : 1
+
+  alarm_name          = "mongo_alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "80"
+  alarm_description   = "This metric monitors ec2 cpu utilization"
+  dimensions = {
+    InstanceId = aws_instance.my_mongo_instance[0].id
   }
 }
