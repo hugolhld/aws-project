@@ -2,19 +2,19 @@
 
 *Hugo Lhernould - Johannes Houenou - Axel Lanyan - Arouna Kanoke - Mehdi Mahoudi - Nicolas Speich*
 
-### For deploy on AWS 👊🏼
+### For AWS deployment 👊🏼
 
-#### 0 - Necessary dependency ✌️
+#### 0 - Necessary dependencies ✌️
 
  - Terraform CLI
  - AWS CLI
 
-#### 1 - Configure your AWS credidentials 🚗
+#### 1 - Configure yours AWS credidentials 🚗
 
- - Log you on you AWS account
- - in `eu-west-3` region
- - Create **EC2 Key Pair** region and download them, put this at the root of directory
- - Configure Security group with rules like that: 
+ - Log on your AWS account
+ - Make sur to be in `eu-west-3` region
+ - Create **EC2 Key Pair** and download it, put it at the root of your project directory
+ - Configure Security group with the following rules: 
 
     `Custom TCP with PORT 8080`
     `Custom TCP with port 8081`
@@ -24,35 +24,25 @@
 
 #### 2 - Run Terraform 🏃‍♂️
 
- - In first, run `terraform init`
- - Secondary, run `terraform apply`
- - You have to enter the name of your key file
- - You have to enter the path of your key file 
+ - First, run `terraform init`
+ - Secondly, run `terraform apply`
+ - You have to enter the name of your keys file
+ - You have to enter the path of your keys file 
 **(THE FILE MUST BE IN ROOT FOLDER)**
 
- - Waiting for deployement
+ - Wait for deployement
 
  ⚠️ *The region is eu-west-3 for the AMI image, don't chnage that*
 
-#### 3 - How to access to app 🏠
+#### 3 - How to access the app 🏠
 
  - **Spark App**
-    - Go in your `MySparkInstance`
+    - Go to your `MySparkInstance`
     - Get your **Public IPv4 DNS**
-    - Access to `http://<SPARK-IP>:8080` and no `https` ⚠️
+    - Get to `http://<SPARK-IP>:8080` and no `https` ⚠️
 
  - **Mongo UI App**
-    - Go in your `MyMongoInstance`
+    - Go to your `MyMongoInstance`
     - Get your **Public IPv4 DNS**
-    - Access to `http://<MONGO-IP>:8081` and no `https` ⚠️
+    - Get to `http://<MONGO-IP>:8081` and no `https` ⚠️
     - User: `admin` and password: `password`
-
-#### 4 - Result
-
- - **Spark App**
-
-    ![Spark app](./img/spark.png)   
-
- - **Mongo UI App**
-
-    ![Mongo UI App](./img/mongo.png)
