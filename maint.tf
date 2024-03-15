@@ -137,6 +137,8 @@ resource "aws_instance" "my_mongo_instance" {
   ami           = "ami-06f64fb0331ab61a0"
   instance_type = "t2.micro"
 
+  monitoring = true
+
   key_name = var.key_name
 
   tags = {
