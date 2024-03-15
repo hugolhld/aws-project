@@ -1,4 +1,4 @@
-name: Check IP and Execute Script
+name: Deploy workflow
 
 on:
   push:

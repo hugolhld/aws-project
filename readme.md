@@ -46,3 +46,13 @@
     - Get your **Public IPv4 DNS**
     - Access to `http://<MONGO-IP>:8081` and no `https` ⚠️
     - User: `admin` and password: `password`
+
+#### 4 - Result
+
+ - **Spark App**
+
+    ![Spark app](./img/spark.png)   
+
+ - **Mongo UI App**
+
+    ![Mongo UI App](./img/mongo.png)
