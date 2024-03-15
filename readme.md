@@ -45,7 +45,7 @@
     - Go in your `MyMongoInstance`
     - Get your **Public IPv4 DNS**
     - Access to `http://<MONGO-IP>:8081` and no `https` ⚠️
-    - User: `admin` and password: `password`
+    - User: `user` and password: `password`
 
 #### 4 - Result
 
