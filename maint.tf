@@ -15,9 +15,38 @@ provider "aws" {
   region = "eu-west-3"
 }
 
+# Créer un rôle IAM pour l'accès à CloudWatch
+resource "aws_iam_role" "cloudwatch_role" {
+  name = "cloudwatch_role"
+
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "ec2.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+# Attacher une politique pour l'accès à CloudWatch au rôle IAM
+resource "aws_iam_policy_attachment" "cloudwatch_policy_attachment" {
+  name       = "cloudwatch_policy_attachment"
+  roles      = [aws_iam_role.cloudwatch_role.name]
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+}
+
+
+
+
 # Check if MyInstance exists by name and instance is running
 data "aws_instances" "MySparkInstance_existing" {
 
+    # instance_state = "running"
     instance_tags = {
       Name = "MySparkInstance"
     }
@@ -33,10 +62,13 @@ resource "aws_instance" "my_ec2_instance" {
 
   count = length(data.aws_instances.MySparkInstance_existing.ids) > 0 ? 0 : 1
 
-  ami           = "ami-06f64fb0331ab61a0"
+  ami           = "ami-0b7282dd7deb48e78"
   instance_type = "t2.micro"
 
   key_name = var.key_name
+
+  # Add role to the instance
+  # iam_instance_profile = "role-ec2-admin"
 
   tags = {
     Name = "MySparkInstance"
@@ -44,7 +76,7 @@ resource "aws_instance" "my_ec2_instance" {
 
   connection {
     type        = "ssh"
-    user        = "ec2-user"
+    user        = "ec2-user"  # Faire attention, change en fonction des AIM
     private_key = file(var.key_path)
     host        = self.public_ip
   }
@@ -132,7 +164,7 @@ resource "aws_instance" "my_mongo_instance" {
 
   count = length(data.aws_instances.MyMongoInstance_existing.ids) > 0 ? 0 : 1
 
-  ami           = "ami-06f64fb0331ab61a0"
+  ami           = "ami-0b7282dd7deb48e78"
   instance_type = "t2.micro"
 
   key_name = var.key_name
@@ -210,3 +242,7 @@ resource "null_resource" "update_mongo_app" {
     ]
   }
 }
+
+# output "ec2_instance_public_ip" {
+#   value = aws_instance.my_ec2_instance.public_ip
+# }
